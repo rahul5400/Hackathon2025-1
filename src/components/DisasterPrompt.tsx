@@ -23,10 +23,13 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
           <Form.Group controlId="disasterType">
             <Form.Label>Disaster Type:</Form.Label>
             <Form.Control as="select" value={selectedDisaster} onChange={(e) => setSelectedDisaster(e.target.value)}>
-              <option value="default">Default</option>
-              <option value="flood">Flood</option>
-              <option value="earthquake">Earthquake</option>
-              {/* Add more disaster types as needed */}
+              <option value="Blizzard">Blizzard</option>
+              <option value="Earthquake">Earthquake</option>
+              <option value="Flood">Flood</option>
+              <option value="Hurricane/Tornado">Hurricane/Tornado</option>
+              <option value="Power Plant Meltdown">Power Plant Meltdown</option>
+              <option value="Tsunami">Tsunami</option>
+              <option value="Wildfire">Wildfire</option>
             </Form.Control>
           </Form.Group>
         </Form>

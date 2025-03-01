@@ -63,10 +63,13 @@ function App() {
           <Form>
             <Form.Label>Disaster Type:</Form.Label>
             <Form.Control as="select" onChange={(e) => setDisasterType(e.target.value)}>
-              <option value="default">Default</option>
-              <option value="flood">Flood</option>
-              <option value="earthquake">Earthquake</option>
-              {/* Add more disaster types as needed */}
+              <option value="Blizzard">Blizzard</option>
+              <option value="Earthquake">Earthquake</option>
+              <option value="Flood">Flood</option>
+              <option value="Hurricane/Tornado">Hurricane/Tornado</option>
+              <option value="Power Plant Meltdown">Power Plant Meltdown</option>
+              <option value="Tsunami">Tsunami</option>
+              <option value="Wildfire">Wildfire</option>
             </Form.Control>
           </Form>
         </div>
