@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Button, Form } from 'react-bootstrap';
+import Map from './components/Map';
+import ShelterList from './components/ShelterList';
+import SafetyInfo from './components/SafetyInfo';
+import GoogleMap from './components/GoogleMap';
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -25,19 +29,28 @@ function App() {
     setKey(event.target.value);
   }
   return (
-    <div className="App">
-      <header className="App-header">
-        New Header
-      </header>
-      <div className="api-key">
-      <Form>
-        <Form.Label>API Key:</Form.Label>
-        <Form.Control type="password" placeholder="Insert API Key Here" onChange={changeKey}></Form.Control>
-        <br></br>
-        <Button className="Submit-Button" onClick={handleSubmit}>Submit</Button>
-      </Form>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <div style={{ height: '50vh', width: '80%' }}>
+            <GoogleMap />
+          </div>
+        </header>
+        <div className="api-key">
+          <Form>
+            <Form.Label>API Key:</Form.Label>
+            <Form.Control type="password" placeholder="Insert API Key Here" onChange={changeKey}></Form.Control>
+            <br></br>
+            <Button className="Submit-Button" onClick={handleSubmit}>Submit</Button>
+          </Form>
+        </div>
+        <Routes>
+          <Route path="/map" element={<Map />} />
+          <Route path="/shelters" element={<ShelterList />} />
+          <Route path="/safety-info" element={<SafetyInfo />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
