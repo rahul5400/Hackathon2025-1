@@ -8,6 +8,7 @@ import SafetyInfo from './components/SafetyInfo';
 import GoogleMap from './components/GoogleMap';
 import DisasterPrompt from './components/DisasterPrompt';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from 'dotenv';
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -17,13 +18,14 @@ if (prevKey !== null) {
   keyData = JSON.parse(prevKey);
 }
 
-async function App() {
+function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
   const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
   const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
   const [suppliesResults, setSuppliesResults] = useState<string>("");
   const [directionsResults, setDirectionsResults] = useState<string>(""); 
   const [preventionResults, setPreventionResults] = useState<string>("");
+  const apiKey = process.env.API_KEY;
 
   useEffect(() => {
     setShowPrompt(true); // Show the prompt when the component mounts
@@ -34,20 +36,34 @@ async function App() {
     setShowPrompt(false);
   };
 
-  const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-  //Supplies, directions, prevention
-  const suppliesPrompt = "The disaster was" + {disasterType} + ". List the supplies needed";
-  const directionsPrompt = "The disaster was" + {disasterType} + ". List the directions to the nearest shelter";
-  const preventionPrompt = "The disaster was" + {disasterType} + ". List the prevention methods";
+  useEffect(() => {
+    if (disasterType !== 'default') {
+      const fetchData = async () => {
+        if (!apiKey) {
+          console.error("API key is missing");
+          return;
+        }
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const suppliesResponse = model.generateContent(suppliesPrompt);
-  const directionsResponse = model.generateContent(directionsPrompt);
-  const preventionResponse = model.generateContent(preventionPrompt);
+        const suppliesPrompt = `The disaster was ${disasterType}. List the supplies needed.`;
+        const directionsPrompt = `The disaster was ${disasterType}. List the directions to the nearest shelter.`;
+        const preventionPrompt = `The disaster was ${disasterType}. List the prevention methods.`;
 
-  setSuppliesResults((await suppliesResponse).response.text());
-  setDirectionsResults((await directionsResponse).response.text());
-  setPreventionResults((await preventionResponse).response.text());
+        const suppliesResponse = await model.generateContent(suppliesPrompt);
+        const directionsResponse = await model.generateContent(directionsPrompt);
+        const preventionResponse = await model.generateContent(preventionPrompt);
+
+        setSuppliesResults(suppliesResponse.response.text());
+        setDirectionsResults(directionsResponse.response.text());
+        setPreventionResults(preventionResponse.response.text());
+      };
+
+      fetchData();
+    }
+  }, [disasterType, key]);
+
+  
 
   //sets the local storage item to the api key the user inputed
   function handleSubmit() {
@@ -83,7 +99,7 @@ async function App() {
         </div>
 
         <div className="map-box">
-            <GoogleMap />
+            <GoogleMap disasterType={disasterType}/>
         </div>
 
         <div className="tab-bar"></div>
