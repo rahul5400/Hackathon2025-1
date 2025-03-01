@@ -16,11 +16,9 @@ if (prevKey !== null) {
   keyData = JSON.parse(prevKey);
 }
 
-
-
 function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
-  const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
+  const [disasterType, setDisasterType] = useState<string>(''); // for disaster type
   const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
   const [slectedTab, setSelectedTab] = useState(1);
 
@@ -47,6 +45,7 @@ function App() {
   function changeKey(event: React.ChangeEvent<HTMLInputElement>) {
     setKey(event.target.value);
   }
+
   return (
     <Router>
       <div className="App">
@@ -54,13 +53,16 @@ function App() {
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
 
         <div className="map-box">
+          {disasterType && disasterType !== 'Earthquake' && disasterType !== 'Tsunami' && (
             <GoogleMap disasterType={disasterType} />
+          )}
         </div>
 
         <div className="disaster-type">
           <Form>
             <Form.Label>Disaster Type:</Form.Label>
             <Form.Control as="select" onChange={(e) => setDisasterType(e.target.value)}>
+              <option value="">Select a disaster type</option>
               <option value="Blizzard">Blizzard</option>
               <option value="Earthquake">Earthquake</option>
               <option value="Flood">Flood</option>

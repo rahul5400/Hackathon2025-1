@@ -13,6 +13,15 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
     onClose(selectedDisaster);
   };
 
+  if (selectedDisaster === 'Power Plant Meltdown') {
+    return (
+      <div>
+        <h2>Power Plant Meltdown</h2>
+        <img src="/path/to/power-plant-meltdown-image.jpg" alt="Power Plant Meltdown" />
+      </div>
+    );
+  }
+
   return (
     <Modal show={show} onHide={() => onClose('default')}>
       <Modal.Header closeButton>
@@ -47,5 +56,3 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
 };
 
 export default DisasterPrompt;
-
-export {};

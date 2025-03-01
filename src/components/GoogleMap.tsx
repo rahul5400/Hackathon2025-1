@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import myImage from ',/src/Images/salem-evac.jpg';
 
 interface Location {
   lat: number;
@@ -59,6 +60,10 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
   }, [disasterType]);
 
   useEffect(() => {
+    if (!disasterType || disasterType === 'earthquake' || disasterType === 'tsunami' || disasterType === 'power-plant-meltdown') {
+      return;
+    }
+
     let map: any;
 
     // Haversine formula to calculate distance between two points
@@ -156,7 +161,7 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
         });
 
         const infoWindow = new (window as any).google.maps.InfoWindow({
-          content: `<h3>${location.name}</h3>`,
+          content: `<div style="color: black;"><h3>${location.name}</h3></div>`, // Inline CSS for black text color
         });
 
         marker.addListener('click', () => {
@@ -202,7 +207,7 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
 
             // Add an info window for the closest shelter
             const closestInfoWindow = new (window as any).google.maps.InfoWindow({
-              content: `<h3>Closest Shelter</h3><p>${closestLocation.name}</p><p>Distance: ${minDistance.toFixed(2)} km</p>`,
+              content: `<div style="color: black;"><h3>Closest Shelter</h3><p>${closestLocation.name}</p><p>Distance: ${minDistance.toFixed(2)} km</p></div>`, // Inline CSS for black text color
             });
 
             closestMarker.addListener('click', () => {
@@ -244,7 +249,17 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
     return () => {
       document.head.removeChild(script);
     };
-  }, [locations]);
+  }, [locations, disasterType]);
+
+  if (disasterType === 'power-plant-meltdown') {
+    return (
+      <div style={{ height: '100vh', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <img src={myImage} alt="Evac Map" style={{ maxHeight: '100%', maxWidth: '100%' }} />
+      </div>
+    );
+  } else if (disasterType === 'earthquake' || disasterType === 'tsunami') {
+    return null;
+  }
 
   return <div id="map" style={{ height: '100vh', width: '100%' }}></div>;
 };
