@@ -7,6 +7,7 @@ import ShelterList from './components/ShelterList';
 import SafetyInfo from './components/SafetyInfo';
 import GoogleMap from './components/GoogleMap';
 import DisasterPrompt from './components/DisasterPrompt';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -29,6 +30,13 @@ function App() {
     setDisasterType(selectedDisaster);
     setShowPrompt(false);
   };
+
+  const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  //Supplies, directions, prevention
+  const prompts = "The disaster was" + {disasterType} + ". List the supplies needed";
+
+  const result = await model.generateContent(prompts);
 
   //sets the local storage item to the api key the user inputed
   function handleSubmit() {
