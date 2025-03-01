@@ -1,3 +1,24 @@
+Project Members: Anthony Nittoly, Colin Parsons, Nathan Chen, Rahul Patel
+
+Description: 
+    We are creating a web app that will help people navigate in the event of a natural disaster. 
+    The app will open with a map on the top showing your current location, under that will be tabs for disaster
+    events showing what to do in case of any of these event. These tabs include where to go, safety measures to take,
+    what to look for in your area for the probability of an event to take place.
+    The current version includes the following disasters, floods, hurricanes/tornadoes, earthquakes, tsunamis, 
+    man-made diasters , blizzards, and wildfires. 
+
+
+Credits:
+        github repository - John Aromando-Starter_helpi 
+            https://github.com/THRALLab/starter_helpi
+
+        Typescript Tome
+            https://frontend-fun.github.io/react-hooks-typescript-tome/1-setup/environment.html 
+
+            
+
+
 # Getting Started with Helpi
 
 Packages Included:

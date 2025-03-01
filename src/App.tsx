@@ -70,14 +70,21 @@ function App() {
         </div>
 
         <div className="tab-bar">
-          <div className="tab-button" style={{backgroundColor: slectedTab === 1 ? "gray" : "black"}} onClick={()=>selectTab(1)}></div>
-          <div className="tab-button" style={{backgroundColor: slectedTab === 2 ? "gray" : "black"}} onClick={()=>selectTab(2)}></div>
-          <div className="tab-button" style={{backgroundColor: slectedTab === 3 ? "gray" : "black"}} onClick={()=>selectTab(3)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 1 ? "darkgray" : "gray"}} onClick={()=>selectTab(1)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 2 ? "darkgray" : "gray"}} onClick={()=>selectTab(2)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 3 ? "darkgray" : "gray"}} onClick={()=>selectTab(3)}></div>
         </div>
 
         <div className="directions-box">Directions go this way or something</div>
 
-        <div className="information-box">Information about the disaster</div>
+        <div className="Contacts-box">
+          <h1>Contact Numbers:</h1>
+          <p>Delaware Emergency Services: (610) 565-8700</p>
+          <p>Emergency: 911</p>
+          <p> Non-Emergency: 311</p>
+          <p>Red Cross: (800) 733-2767</p>
+          <p>Salvation Army: (800) 725-2769</p>
+          </div>
 
         <Routes>
           <Route path="/map" element={<Map disasterType={disasterType} />} />
