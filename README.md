@@ -1,3 +1,17 @@
+Project Members: Anthony Nittoly, Colin Parsons, Nathan Chen, Rahul Patel
+
+Description: 
+
+
+Credits:github repository - John Aromando - Starter_helpi 
+            https://github.com/THRALLab/starter_helpi
+
+        Tome of wisdom - 
+            https://frontend-fun.github.io/react-hooks-typescript-tome/1-setup/environment.html 
+
+            
+
+
 # Getting Started with Helpi
 
 Packages Included:
