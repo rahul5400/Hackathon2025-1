@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Button, Form } from 'react-bootstrap';
+import Map from './components/Map';
+import ShelterList from './components/ShelterList';
+import SafetyInfo from './components/SafetyInfo';
+import GoogleMap from './components/GoogleMap';
+import DisasterPrompt from './components/DisasterPrompt';
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -10,9 +16,27 @@ if (prevKey !== null) {
   keyData = JSON.parse(prevKey);
 }
 
+
+
 function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
-  
+  const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
+  const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
+  const [slectedTab, setSelectedTab] = useState(1);
+
+  useEffect(() => {
+    setShowPrompt(true); // Show the prompt when the component mounts
+  }, []);
+
+  const handleDisasterSelect = (selectedDisaster: string) => {
+    setDisasterType(selectedDisaster);
+    setShowPrompt(false);
+  };
+
+  const selectTab = (selectedTab: number) => {
+    setSelectedTab(selectedTab);
+  }
+
   //sets the local storage item to the api key the user inputed
   function handleSubmit() {
     localStorage.setItem(saveKeyData, JSON.stringify(key));
@@ -24,25 +48,44 @@ function App() {
     setKey(event.target.value);
   }
   return (
-    <div className="App">
+    <Router>
+      <div className="App">
+        
+        <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
 
-      <div className="supplies-box">Supplies go here or something</div>
+        <div className="map-box">
+            <GoogleMap disasterType={disasterType} />
+        </div>
 
-      <header className="map-box">
-        Map goes here
-      </header>
+        <div className="disaster-type">
+          <Form>
+            <Form.Label>Disaster Type:</Form.Label>
+            <Form.Control as="select" onChange={(e) => setDisasterType(e.target.value)}>
+              <option value="default">Default</option>
+              <option value="flood">Flood</option>
+              <option value="earthquake">Earthquake</option>
+              {/* Add more disaster types as needed */}
+            </Form.Control>
+          </Form>
+        </div>
 
-      <div className="directions-box"> Closest Emergency Shelter: insert shelter here</div>
+        <div className="tab-bar">
+          <div className="tab-button" style={{backgroundColor: slectedTab === 1 ? "gray" : "black"}} onClick={()=>selectTab(1)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 2 ? "gray" : "black"}} onClick={()=>selectTab(2)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 3 ? "gray" : "black"}} onClick={()=>selectTab(3)}></div>
+        </div>
 
-      <div className="api-key">
-      <Form>
-        <Form.Label>API Key:</Form.Label>
-        <Form.Control type="password" placeholder="Insert API Key Here" onChange={changeKey}></Form.Control>
-        <br></br>
-        <Button className="Submit-Button" onClick={handleSubmit}>Submit</Button>
-      </Form>
+        <div className="directions-box">Directions go this way or something</div>
+
+        <div className="information-box">Information about the disaster</div>
+
+        <Routes>
+          <Route path="/map" element={<Map disasterType={disasterType} />} />
+          <Route path="/shelters" element={<ShelterList />} />
+          <Route path="/safety-info" element={<SafetyInfo />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
