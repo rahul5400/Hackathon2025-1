@@ -16,10 +16,13 @@ if (prevKey !== null) {
   keyData = JSON.parse(prevKey);
 }
 
+
+
 function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
   const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
   const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
+  const [slectedTab, setSelectedTab] = useState(1);
 
   useEffect(() => {
     setShowPrompt(true); // Show the prompt when the component mounts
@@ -29,6 +32,10 @@ function App() {
     setDisasterType(selectedDisaster);
     setShowPrompt(false);
   };
+
+  const selectTab = (selectedTab: number) => {
+    setSelectedTab(selectedTab);
+  }
 
   //sets the local storage item to the api key the user inputed
   function handleSubmit() {
@@ -45,9 +52,11 @@ function App() {
       <div className="App">
         
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
+
         <div className="map-box">
             <GoogleMap disasterType={disasterType} />
         </div>
+
         <div className="disaster-type">
           <Form>
             <Form.Label>Disaster Type:</Form.Label>
@@ -60,7 +69,11 @@ function App() {
           </Form>
         </div>
 
-        <div className="tab-bar"></div>
+        <div className="tab-bar">
+          <div className="tab-button" style={{backgroundColor: slectedTab === 1 ? "darkgray" : "gray"}} onClick={()=>selectTab(1)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 2 ? "darkgray" : "gray"}} onClick={()=>selectTab(2)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 3 ? "darkgray" : "gray"}} onClick={()=>selectTab(3)}></div>
+        </div>
 
         <div className="directions-box">Directions go this way or something</div>
 

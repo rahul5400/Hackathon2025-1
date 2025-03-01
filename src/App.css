@@ -36,6 +36,7 @@ html, body {
 }
 
 .tab-bar{
+  display:flex;
   position: absolute;
   top: 65%;
   height: 5%;
@@ -43,20 +44,26 @@ html, body {
   background-color: lightgreen;
 }
 
-.supplies-box{
-  position: absolute;
-  left:0%;
-  width : 18%;
-  height: 0%;
-  background-color: lightblue;
+.tab-button{
+  position: relative;
+  height: 100%;
+  width: 33.33%;
+  background-color: gray;
+  border: 3px solid dimgray;
+  border-radius: 3px;
+  z-index: 1;
+
 }
 
 .directions-box{
   position: absolute;
   bottom: 0%;
-  width: 100%;
-  height: 30%;
-  background-color: lightsalmon;
+  width: 98%;
+  height: 31% ;
+  transform: translateX(-50%);
+  left:50%;
+  background-color: lightgoldenrodyellow;
+  padding-top: 10px;
 }
 
 .Contacts-box{
