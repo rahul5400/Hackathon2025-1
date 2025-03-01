@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import myImage from ',/src/Images/salem-evac.jpg';
+import myImage from './salem-evac.jpg';
 
 interface Location {
   lat: number;
