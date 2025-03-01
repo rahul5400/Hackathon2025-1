@@ -1,14 +1,16 @@
 import React from 'react';
+import GoogleMap from './GoogleMap';
 
-const Map: React.FC = () => {
+interface MapProps {
+  disasterType: string;
+}
+
+const Map: React.FC<MapProps> = ({ disasterType }) => {
   return (
-    <div>
-      <h2>Map</h2>
-      {/* Integrate Google Maps or Mapbox here */}
+    <div style={{ height: '100vh', width: '100%' }}>
+      <GoogleMap disasterType={disasterType} />
     </div>
   );
 };
 
 export default Map;
-
-export {};
