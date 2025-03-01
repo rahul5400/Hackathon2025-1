@@ -43,6 +43,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
         <header className="App-header">
           <div style={{ height: '50vh', width: '80%' }}>
@@ -50,15 +51,6 @@ function App() {
           </div>
           
         </header>
-        
-        <div className="api-key">
-          <Form>
-            <Form.Label>API Key:</Form.Label>
-            <Form.Control type="password" placeholder="Insert API Key Here" onChange={changeKey}></Form.Control>
-            <br></br>
-            <Button className="Submit-Button" onClick={handleSubmit}>Submit</Button>
-          </Form>
-        </div>
         <div className="disaster-type">
           <Form>
             <Form.Label>Disaster Type:</Form.Label>
@@ -70,6 +62,19 @@ function App() {
             </Form.Control>
           </Form>
         </div>
+
+        <div className="map-box">
+            <GoogleMap />
+        </div>
+
+        <div className="tab-bar"></div>
+
+        <div className="directions-box">Directions go this way or something</div>
+
+        <div className="supplies-box">Reasources go here or something</div>
+
+        <div className="information-box">Information about the disaster</div>
+
         <Routes>
           <Route path="/map" element={<Map disasterType={disasterType} />} />
           <Route path="/shelters" element={<ShelterList />} />
