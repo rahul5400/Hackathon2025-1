@@ -18,6 +18,8 @@ if (prevKey !== null) {
   keyData = JSON.parse(prevKey);
 }
 
+
+
 function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
   const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
@@ -26,6 +28,7 @@ function App() {
   const [directionsResults, setDirectionsResults] = useState<string>(""); 
   const [preventionResults, setPreventionResults] = useState<string>("");
   const apiKey = process.env.API_KEY;
+  const [slectedTab, setSelectedTab] = useState(1);
 
   useEffect(() => {
     setShowPrompt(true); // Show the prompt when the component mounts
@@ -64,6 +67,9 @@ function App() {
   }, [disasterType, key]);
 
   
+  const selectTab = (selectedTab: number) => {
+    setSelectedTab(selectedTab);
+  }
 
   //sets the local storage item to the api key the user inputed
   function handleSubmit() {
@@ -80,12 +86,11 @@ function App() {
       <div className="App">
         
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
-        <header className="App-header">
-          <div style={{ height: '50vh', width: '80%' }}>
+
+        <div className="map-box">
             <GoogleMap disasterType={disasterType} />
-          </div>
-          
-        </header>
+        </div>
+
         <div className="disaster-type">
           <Form>
             <Form.Label>Disaster Type:</Form.Label>
@@ -98,17 +103,22 @@ function App() {
           </Form>
         </div>
 
-        <div className="map-box">
-            <GoogleMap disasterType={disasterType}/>
+        <div className="tab-bar">
+          <div className="tab-button" style={{backgroundColor: slectedTab === 1 ? "darkgray" : "gray"}} onClick={()=>selectTab(1)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 2 ? "darkgray" : "gray"}} onClick={()=>selectTab(2)}></div>
+          <div className="tab-button" style={{backgroundColor: slectedTab === 3 ? "darkgray" : "gray"}} onClick={()=>selectTab(3)}></div>
         </div>
-
-        <div className="tab-bar"></div>
 
         <div className="directions-box">Directions go this way or something</div>
 
-        <div className="supplies-box">Reasources go here or something</div>
-
-        <div className="information-box">Information about the disaster</div>
+        <div className="Contacts-box">
+          <h1>Contact Numbers:</h1>
+          <p>Delaware Emergency Services: (610) 565-8700</p>
+          <p>Emergency: 911</p>
+          <p> Non-Emergency: 311</p>
+          <p>Red Cross: (800) 733-2767</p>
+          <p>Salvation Army: (800) 725-2769</p>
+          </div>
 
         <Routes>
           <Route path="/map" element={<Map disasterType={disasterType} />} />
