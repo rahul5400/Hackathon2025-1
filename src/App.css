@@ -55,23 +55,15 @@ html, body {
 
 }
 
-.supplies-box{
-  position: absolute;
-  left:0%;
-  width : 18%;
-  height: 60%;
-  background-color: lightblue;
-}
-
 .directions-box{
   position: absolute;
   bottom: 0%;
   width: 98%;
-  margin-top: 10%;
-  height: 31%;
+  height: 31% ;
   transform: translateX(-50%);
   left:50%;
-  background-color: burlywood;
+  background-color: lightgoldenrodyellow;
+  padding-top: 10px;
 }
 
 .information-box{
