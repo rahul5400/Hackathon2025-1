@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Button, Form } from 'react-bootstrap';
@@ -6,6 +6,7 @@ import Map from './components/Map';
 import ShelterList from './components/ShelterList';
 import SafetyInfo from './components/SafetyInfo';
 import GoogleMap from './components/GoogleMap';
+import DisasterPrompt from './components/DisasterPrompt';
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -17,7 +18,18 @@ if (prevKey !== null) {
 
 function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
-  
+  const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
+  const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
+
+  useEffect(() => {
+    setShowPrompt(true); // Show the prompt when the component mounts
+  }, []);
+
+  const handleDisasterSelect = (selectedDisaster: string) => {
+    setDisasterType(selectedDisaster);
+    setShowPrompt(false);
+  };
+
   //sets the local storage item to the api key the user inputed
   function handleSubmit() {
     localStorage.setItem(saveKeyData, JSON.stringify(key));
@@ -32,6 +44,25 @@ function App() {
     <Router>
       <div className="App">
         
+        <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
+        <header className="App-header">
+          <div style={{ height: '50vh', width: '80%' }}>
+            <GoogleMap disasterType={disasterType} />
+          </div>
+          
+        </header>
+        <div className="disaster-type">
+          <Form>
+            <Form.Label>Disaster Type:</Form.Label>
+            <Form.Control as="select" onChange={(e) => setDisasterType(e.target.value)}>
+              <option value="default">Default</option>
+              <option value="flood">Flood</option>
+              <option value="earthquake">Earthquake</option>
+              {/* Add more disaster types as needed */}
+            </Form.Control>
+          </Form>
+        </div>
+
         <div className="map-box">
             <GoogleMap />
         </div>
@@ -43,9 +74,9 @@ function App() {
         <div className="supplies-box">Reasources go here or something</div>
 
         <div className="information-box">Information about the disaster</div>
-        
+
         <Routes>
-          <Route path="/map" element={<Map />} />
+          <Route path="/map" element={<Map disasterType={disasterType} />} />
           <Route path="/shelters" element={<ShelterList />} />
           <Route path="/safety-info" element={<SafetyInfo />} />
         </Routes>
