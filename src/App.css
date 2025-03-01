@@ -27,13 +27,20 @@ html, body {
   background-color: tan;
   position: absolute;
   width: 100%;
-  transform: translateX(-50%);
-  height: 60%;
+  height: 30%;
   display: flex;
   color: white;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
+}
+
+.tab-bar{
+  position: absolute;
+  top: 65%;
+  height: 5%;
+  width: 100%;
+  background-color: lightgreen;
 }
 
 .supplies-box{
@@ -46,12 +53,19 @@ html, body {
 
 .directions-box{
   position: absolute;
-  right: 0%;
-  width: 18%;
-  height: 60%;
+  bottom: 0%;
+  width: 100%;
+  height: 30%;
   background-color: lightsalmon;
 }
 
+.information-box{
+  position: absolute;
+  bottom:-25%;
+  width : 100%;
+  height: 30%;
+  background-color: lightpink;
+}
 .api-key{
   display: flex;
   justify-content: center;

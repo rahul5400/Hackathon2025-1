@@ -32,22 +32,18 @@ function App() {
     <Router>
       <div className="App">
         
-        <header className="App-header">
-          <div style={{ height: '50vh', width: '80%' }}>
-            
+        <div className="map-box">
             <GoogleMap />
-          </div>
-          
-        </header>
-        
-        <div className="api-key">
-          <Form>
-            <Form.Label>API Key:</Form.Label>
-            <Form.Control type="password" placeholder="Insert API Key Here" onChange={changeKey}></Form.Control>
-            <br></br>
-            <Button className="Submit-Button" onClick={handleSubmit}>Submit</Button>
-          </Form>
         </div>
+
+        <div className="tab-bar"></div>
+
+        <div className="directions-box">Directions go this way or something</div>
+
+        <div className="supplies-box">Reasources go here or something</div>
+
+        <div className="information-box">Information about the disaster</div>
+        
         <Routes>
           <Route path="/map" element={<Map />} />
           <Route path="/shelters" element={<ShelterList />} />
