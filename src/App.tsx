@@ -67,7 +67,7 @@ function App() {
         </div>
 
         <div className="map-box">
-            <GoogleMap />
+          <GoogleMap disasterType={disasterType} />
         </div>
 
         <div className="tab-bar"></div>
