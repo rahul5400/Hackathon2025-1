@@ -48,7 +48,9 @@ function App() {
           <div style={{ height: '50vh', width: '80%' }}>
             <GoogleMap disasterType={disasterType} />
           </div>
+          
         </header>
+        
         <div className="api-key">
           <Form>
             <Form.Label>API Key:</Form.Label>
