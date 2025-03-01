@@ -26,8 +26,7 @@ html, body {
 .map-box {
   background-color: tan;
   position: absolute;
-  width: 64%;
-  left: 50%;
+  width: 100%;
   transform: translateX(-50%);
   height: 60%;
   display: flex;
