@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Button, Form } from 'react-bootstrap';
 
@@ -26,9 +25,15 @@ function App() {
   }
   return (
     <div className="App">
-      <header className="App-header">
-        New Header
+
+      <div className="supplies-box">Supplies go here or something</div>
+
+      <header className="map-box">
+        Map goes here
       </header>
+
+      <div className="directions-box"> Closest Emergency Shelter: insert shelter here</div>
+
       <div className="api-key">
       <Form>
         <Form.Label>API Key:</Form.Label>
