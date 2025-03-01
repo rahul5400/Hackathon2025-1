@@ -1,5 +1,15 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
   text-align: center;
+}
+.body{
+  background-color: white;
+  height: 100%;
 }
 
 .App-logo {
@@ -13,15 +23,42 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.map-box {
+  background-color: tan;
+  position: absolute;
+  width: 64%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 60%;
   display: flex;
-  flex-direction: column;
+  color: white;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-size: 2rem;
+}
+
+.supplies-box{
+  position: absolute;
+  left:0%;
+  width : 18%;
+  height: 60%;
+  background-color: lightblue;
+}
+
+.directions-box{
+  position: absolute;
+  right: 0%;
+  width: 18%;
+  height: 60%;
+  background-color: lightsalmon;
+}
+
+.api-key{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100vh;
+  padding-bottom: 20px; 
 }
 
 .App-link {

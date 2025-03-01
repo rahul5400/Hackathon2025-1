@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Button, Form } from 'react-bootstrap';
+import Map from './components/Map';
+import ShelterList from './components/ShelterList';
+import SafetyInfo from './components/SafetyInfo';
+import GoogleMap from './components/GoogleMap';
+import DisasterPrompt from './components/DisasterPrompt';
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -13,7 +18,18 @@ if (prevKey !== null) {
 
 function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
-  
+  const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
+  const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
+
+  useEffect(() => {
+    setShowPrompt(true); // Show the prompt when the component mounts
+  }, []);
+
+  const handleDisasterSelect = (selectedDisaster: string) => {
+    setDisasterType(selectedDisaster);
+    setShowPrompt(false);
+  };
+
   //sets the local storage item to the api key the user inputed
   function handleSubmit() {
     localStorage.setItem(saveKeyData, JSON.stringify(key));
@@ -25,28 +41,42 @@ function App() {
     setKey(event.target.value);
   }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Form>
-        <Form.Label>API Key:</Form.Label>
-        <Form.Control type="password" placeholder="Insert API Key Here" onChange={changeKey}></Form.Control>
-        <br></br>
-        <Button className="Submit-Button" onClick={handleSubmit}>Submit</Button>
-      </Form>
-    </div>
+    <Router>
+      <div className="App">
+        <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
+        <header className="App-header">
+          <div style={{ height: '50vh', width: '80%' }}>
+            <GoogleMap disasterType={disasterType} />
+          </div>
+          
+        </header>
+        
+        <div className="api-key">
+          <Form>
+            <Form.Label>API Key:</Form.Label>
+            <Form.Control type="password" placeholder="Insert API Key Here" onChange={changeKey}></Form.Control>
+            <br></br>
+            <Button className="Submit-Button" onClick={handleSubmit}>Submit</Button>
+          </Form>
+        </div>
+        <div className="disaster-type">
+          <Form>
+            <Form.Label>Disaster Type:</Form.Label>
+            <Form.Control as="select" onChange={(e) => setDisasterType(e.target.value)}>
+              <option value="default">Default</option>
+              <option value="flood">Flood</option>
+              <option value="earthquake">Earthquake</option>
+              {/* Add more disaster types as needed */}
+            </Form.Control>
+          </Form>
+        </div>
+        <Routes>
+          <Route path="/map" element={<Map disasterType={disasterType} />} />
+          <Route path="/shelters" element={<ShelterList />} />
+          <Route path="/safety-info" element={<SafetyInfo />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
