@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Tab, Tabs } from 'react-bootstrap';
 import Map from './components/Map';
 import ShelterList from './components/ShelterList';
 import SafetyInfo from './components/SafetyInfo';
@@ -17,10 +17,13 @@ if (prevKey !== null) {
   keyData = JSON.parse(prevKey);
 }
 
-function App() {
+async function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
   const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
   const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
+  const [suppliesResults, setSuppliesResults] = useState<string>("");
+  const [directionsResults, setDirectionsResults] = useState<string>(""); 
+  const [preventionResults, setPreventionResults] = useState<string>("");
 
   useEffect(() => {
     setShowPrompt(true); // Show the prompt when the component mounts
@@ -34,9 +37,17 @@ function App() {
   const genAI = new GoogleGenerativeAI("YOUR_API_KEY");
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   //Supplies, directions, prevention
-  const prompts = "The disaster was" + {disasterType} + ". List the supplies needed";
+  const suppliesPrompt = "The disaster was" + {disasterType} + ". List the supplies needed";
+  const directionsPrompt = "The disaster was" + {disasterType} + ". List the directions to the nearest shelter";
+  const preventionPrompt = "The disaster was" + {disasterType} + ". List the prevention methods";
 
-  const result = await model.generateContent(prompts);
+  const suppliesResponse = model.generateContent(suppliesPrompt);
+  const directionsResponse = model.generateContent(directionsPrompt);
+  const preventionResponse = model.generateContent(preventionPrompt);
+
+  setSuppliesResults((await suppliesResponse).response.text());
+  setDirectionsResults((await directionsResponse).response.text());
+  setPreventionResults((await preventionResponse).response.text());
 
   //sets the local storage item to the api key the user inputed
   function handleSubmit() {
@@ -83,6 +94,17 @@ function App() {
           <Route path="/shelters" element={<ShelterList />} />
           <Route path="/safety-info" element={<SafetyInfo />} />
         </Routes>
+        <Tabs defaultActiveKey = "supplies" id = "disaster-info-tabs" className = "mb-3">
+          <Tab eventKey = "supplies" title = "Supplies">
+            {suppliesResults}
+          </Tab>
+          <Tab eventKey = "directions" title = "Directions">
+            {directionsResults}
+          </Tab>
+          <Tab eventKey = "prevention" title = "Prevention">
+            {preventionResults}
+          </Tab>
+        </Tabs>
       </div>
     </Router>
   );
