@@ -45,12 +45,9 @@ function App() {
       <div className="App">
         
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
-        <header className="App-header">
-          <div style={{ height: '50vh', width: '80%' }}>
+        <div className="map-box">
             <GoogleMap disasterType={disasterType} />
-          </div>
-          
-        </header>
+        </div>
         <div className="disaster-type">
           <Form>
             <Form.Label>Disaster Type:</Form.Label>
@@ -63,15 +60,9 @@ function App() {
           </Form>
         </div>
 
-        <div className="map-box">
-            <GoogleMap />
-        </div>
-
         <div className="tab-bar"></div>
 
         <div className="directions-box">Directions go this way or something</div>
-
-        <div className="supplies-box">Reasources go here or something</div>
 
         <div className="information-box">Information about the disaster</div>
 
