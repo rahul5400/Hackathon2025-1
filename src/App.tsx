@@ -31,11 +31,15 @@ function App() {
   return (
     <Router>
       <div className="App">
+        
         <header className="App-header">
           <div style={{ height: '50vh', width: '80%' }}>
+            
             <GoogleMap />
           </div>
+          
         </header>
+        
         <div className="api-key">
           <Form>
             <Form.Label>API Key:</Form.Label>
