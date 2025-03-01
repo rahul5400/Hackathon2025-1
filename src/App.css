@@ -1,6 +1,9 @@
 .App {
   text-align: center;
 }
+.body{
+  background-color: white;
+}
 
 .App-logo {
   height: 40vmin;
@@ -15,13 +18,21 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  position: absolute;
+  width: 64%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 60%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+
+}
+
+.api-key{
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-end;
+  height: 100vh;
+  padding-bottom: 20px; 
 }
 
 .App-link {
