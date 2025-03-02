@@ -24,7 +24,7 @@ function App() {
   const [directionsResults, setDirectionsResults] = useState<string>(""); 
   const [preventionResults, setPreventionResults] = useState<string>("");
   console.log("Preparing apiKey");
-  const apiKey = process.env.REACT_APP_API_KEY || ''; // Provide a default value
+  const apiKey = process.env.REACT_APP_API_KEY || 'AIzaSyCvcEd60nJpCBGiM6bX-SqsNf78qVjN9Hc'; // Provide a default value
   console.log("apiKey set to: " + apiKey);
   const [selectedTab, setSelectedTab] = useState(1);
 
@@ -47,6 +47,8 @@ function App() {
     const preventionResponse = await model.generateContent(preventionPrompt);
 
     console.log(suppliesResponse.response.text());
+    console.log(directionsResponse.response.text());
+    console.log(preventionResponse.response.text());
 
     setSuppliesResults(suppliesResponse.response.text());
     setDirectionsResults(directionsResponse.response.text());
