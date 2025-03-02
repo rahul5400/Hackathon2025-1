@@ -92,29 +92,29 @@ function App() {
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
 
         <div className="map-box">
-          {disasterType /*&& disasterType !== 'Earthquake'*/ && disasterType !== 'Wildfire' && disasterType !== 'Hurricane' && disasterType !== 'Blizzard' && disasterType !== 'Power Plant Meltdown' && (
+          {disasterType && disasterType !== 'Hurricane/Tornado' && disasterType !== 'Blizzard' && disasterType !== 'Power Plant Meltdown' && (
             <GoogleMap disasterType={disasterType} />
           )}
         </div>
 
         <Accordion defaultActiveKey="0" className="accordion-sections">
           <Accordion.Item eventKey="0">
-            <Accordion.Header><h2>Directions</h2></Accordion.Header>
-            <Accordion.Body>
+            <Accordion.Header className="accordion-header"><h2>Directions</h2></Accordion.Header>
+            <Accordion.Body className="accordion-body">
               <div className="directions-box">{directionsResults}</div>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">
             <Accordion.Header><h2>Resources/Supplies</h2></Accordion.Header>
             
-            <Accordion.Body>
+            <Accordion.Body className="accordion-body">
             <div className="Resources-box">{suppliesResults}</div>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="2">
             <Accordion.Header><h2>Mitigation</h2></Accordion.Header>
             
-            <Accordion.Body>
+            <Accordion.Body className="accordion-body">
             <div className="Mitigation-box">{preventionResults}</div>
             </Accordion.Body>
           </Accordion.Item>
