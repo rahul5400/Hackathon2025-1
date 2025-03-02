@@ -8,7 +8,7 @@ interface DisasterPromptProps {
 }
 
 const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
-  const [selectedDisaster, setSelectedDisaster] = useState<string>('default');
+  const [selectedDisaster, setSelectedDisaster] = useState<string>('blizzard');
 
   const handleSubmit = () => {
     onClose(selectedDisaster);
@@ -23,7 +23,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
   }
 
   return (
-    <Modal show={show} onHide={() => onClose('default')}>
+    <Modal show={show} onHide={() => onClose('value')}>
       <Modal.Header closeButton>
         <Modal.Title>Select Disaster Type</Modal.Title>
       </Modal.Header>
@@ -43,7 +43,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => onClose('default')}>
+        <Button variant="secondary" onClick={() => onClose(selectedDisaster)}>
           Close
         </Button>
         <Button variant="primary" onClick={handleSubmit}>

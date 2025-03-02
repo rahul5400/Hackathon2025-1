@@ -38,14 +38,33 @@ function App() {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const suppliesPrompt = `There is a natural disaster of: ${disasterType}. List the supplies needed in as few words as possible in raw text.`;
-    const directionsPrompt = `The disaster was ${disasterType}. List the directions to the nearest shelter in as few words.`;
-    const preventionPrompt = `The disaster was ${disasterType}. List ways to mitigate the adverse effects of ${disasterType} in as few words as possible.`;
+    let suppliesPrompt = `say pineapple`;
+    let directionsPrompt = `say apple`;
+    let preventionPrompt = 'say orange';
+    console.log(" skethy Disaster type: " + disasterType);
+    /*if (disasterType === "Blizzard") {
+      console.log("Blizzard detected");
+      suppliesPrompt = `There is a Blizzard happening around me right now, please tell me supplies needed to survive,
+       including water, non-perishable food, and medications and other items needed for survival.`;
+      directionsPrompt = `There is a Blizzard happening around me right now, please tell me directions of what to do 
+      in case of a Blizzard. please include the following list of directions:
+      Stay indoors
+      Wear multiple layers of loose, dry clothing.
+      Drink plenty of water and eat warming foods.
+      If you must go outside, dress in layers, cover exposed skin, and exercise to keep warm.
+      Conserve home energy by lowering heat and closing doors and vents in unused rooms.
+      Stay entertained with low-energy activities like games and reading.
+      Have supplies ready, including water, non-perishable food, and medications
+`;
+      preventionPrompt = 'There is a Blizzard happening around me right now, please tell me ways to mitigate the adverse effects of a Blizzard.';
+    }
+*/
 
     const suppliesResponse = await model.generateContent(suppliesPrompt);
     const directionsResponse = await model.generateContent(directionsPrompt);
     const preventionResponse = await model.generateContent(preventionPrompt);
 
+    console.log("Printing out gemini output");
     console.log(suppliesResponse.response.text());
 
     setSuppliesResults(suppliesResponse.response.text());
@@ -57,18 +76,19 @@ function App() {
     setShowPrompt(true); // Show the prompt when the component mounts
   }, []);
 
-  useEffect(() => {
-    if (disasterType !== 'default') {
-      fetchData(disasterType, apiKey);
-    }
-  }, [disasterType, key]);
+    // useEffect(() => {
+    //   if (disasterType !== 'default') {
+    //     fetchData(disasterType, apiKey);
+    //   }
+    // }, [disasterType, key]);
 
   //Gemini
   const handleDisasterSelect = (selectedDisaster: string) => {
     setDisasterType(selectedDisaster);
-    setShowPrompt(false);
+    setShowPrompt(true);
     fetchData(selectedDisaster, apiKey); // Call the API when a disaster is selected
   };
+  console.log({disasterType});
 
   const renderDirectionsBoxContent = () => {
     switch (selectedTab) {
@@ -82,11 +102,13 @@ function App() {
         return '';
     }
   };
+  console.log({disasterType});
 
   return (
     <Router>
       <div className="App">
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
+        console.log({disasterType});
 
         <div className="map-box">
           {disasterType && disasterType !== 'Earthquake' && disasterType !== 'Wildfire' && disasterType !== 'Hurricane' && disasterType !== 'Blizzard' && disasterType !== 'Power Plant Meltdown' && (
@@ -103,21 +125,23 @@ function App() {
 
         <Accordion defaultActiveKey="0" className="accordion-sections">
           <Accordion.Item eventKey="0">
-            <Accordion.Header>Directions</Accordion.Header>
+            <Accordion.Header><h2>Directions</h2></Accordion.Header>
             <Accordion.Body>
-              <div className="directions-box">Directions go this way or something</div>
+              <div className="directions-box">{directionsResults}</div>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">
-            <Accordion.Header>Resources</Accordion.Header>
+            <Accordion.Header><h2>Resources/Supplies</h2></Accordion.Header>
+            
             <Accordion.Body>
-              <ShelterList />
+            <div className="Resources-box">{suppliesResults}</div>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="2">
-            <Accordion.Header>Mitigation</Accordion.Header>
+            <Accordion.Header><h2>Mitigation</h2></Accordion.Header>
+            
             <Accordion.Body>
-              <SafetyInfo />
+            <div className="Mitigation-box">{preventionResults}</div>
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
@@ -134,14 +158,14 @@ function App() {
           <p>Red Cross: (800) 733-2767</p>
           <p>Salvation Army: (800) 725-2769</p>
         </div>
-
         <Routes>
           <Route path="/shelters" element={<ShelterList />} />
           <Route path="/safety-info" element={<SafetyInfo />} />
         </Routes>
       </div>
     </Router>
+  
   );
-}
 
+}
 export default App;
