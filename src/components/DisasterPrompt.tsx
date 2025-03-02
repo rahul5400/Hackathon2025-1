@@ -8,22 +8,15 @@ interface DisasterPromptProps {
 }
 
 const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
-  const [selectedDisaster, setSelectedDisaster] = useState<string>('default');
+  const [selectedDisaster, setSelectedDisaster] = useState<string>('Blizzard');
 
   const handleSubmit = () => {
+    console.log("Running the DisasterPrompt handleSubmit thing");
     onClose(selectedDisaster);
   };
 
-  if (selectedDisaster === 'Power Plant Meltdown') {
-    return (
-      <div style={{ height: '100vh', width: '100%', objectFit: 'cover' }}>
-        <img src={myImage} alt="Power Plant Evac Map"/>
-      </div>
-    );
-  }
-
   return (
-    <Modal show={show} onHide={() => onClose('default')}>
+    <Modal show={show} onHide={() => onClose('value')}>
       <Modal.Header closeButton>
         <Modal.Title>Select Disaster Type</Modal.Title>
       </Modal.Header>
@@ -32,6 +25,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
           <Form.Group controlId="disasterType">
             <Form.Label>Disaster Type:</Form.Label>
             <Form.Control as="select" value={selectedDisaster} onChange={(e) => setSelectedDisaster(e.target.value)}>
+              <option value="default">Select a disaster type</option>
               <option value="Blizzard">Blizzard</option>
               <option value="Earthquake">Earthquake</option>
               <option value="Flood">Flood</option>
@@ -43,7 +37,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => onClose('default')}>
+        <Button variant="secondary" onClick={() => onClose(selectedDisaster)}>
           Close
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
@@ -52,6 +46,6 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
       </Modal.Footer>
     </Modal>
   );
-};
+}
 
 export default DisasterPrompt;

@@ -12,7 +12,7 @@ html, body {
 }
 
 .body {
-  background-color: white;
+  background-color: #dcd2be;
   height: 100%;
 }
 
@@ -37,24 +37,19 @@ html, body {
 
 }
 
-.tab-bar {
-  display: flex;
-  height: 5%;
-  width: 100%;
-  background-color: lightgreen;
-}
 
-.tab-button {
-  position: relative;
-  height: 100%;
-  width: 33.33%;
-  background-color: gray;
-  border: 3px solid dimgray;
-  border-radius: 3px;
-  z-index: 1;
-}
 
 .directions-box {
+  background-color: lightgoldenrodyellow;
+  padding-top: 10px;
+}
+
+  .Mitigation-box {
+    background-color: lightgoldenrodyellow;
+    padding-top: 10px;
+  }
+
+.Resources-box {
   background-color: lightgoldenrodyellow;
   padding-top: 10px;
 }
@@ -63,6 +58,7 @@ html, body {
   width: 100%;
   background-color: lightpink;
   padding: 20px;
+  
 }
 
 .Reset-button{
@@ -70,11 +66,13 @@ html, body {
   bottom: 10%;
   right: 5%;
   z-index: 1;
-  border-radius: px;
+  border: 10px black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+  border-radius: 100%;
+  background-color: white;
 }
 
 .content-wrapper {
@@ -96,8 +94,45 @@ html, body {
   padding-bottom: 20px; 
 }
 
-.accordion-sections {
-  margin: 20px 0;
+.accordion-body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 98%;
+  right: 50%;
+  transform: translateX(1%);
+  background-color: lightgoldenrodyellow;
+}
+
+.accordion-header{
+  background-color:darkgray;
+  border-radius: 10px;
+  padding: 1px;
+  align-items: center;
+  justify-content: center;
+}
+
+.accordion-button{
+  background-color:darkgray;
+  border-radius: 10px;
+  padding: 1px;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid gray;
+  
+}
+.accordion-button:not(.collapsed) {
+  background-color: lightgray;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+  color: black;
+}
+
+.accordion-button:focus {
+  border-color: black; /* Ensure no border on focus */
+  box-shadow: none; /* Ensure no box-shadow on focus */
+  outline: none; /* Ensure no outline on focus */
 }
 
 .App-link {
