@@ -70,6 +70,10 @@ function App() {
     console.log(directionsResponse.response.text());
     console.log(preventionResponse.response.text());
 
+    setSuppliesResults(suppliesResponse.response.text());
+    setDirectionsResults(directionsResponse.response.text());
+    setPreventionResults(preventionResponse.response.text());
+
   };
 
   //Gemini
@@ -86,19 +90,11 @@ function App() {
   return (
       <div className="Everything">
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
-        console.log({disasterType});
 
         <div className="map-box">
-          {disasterType && disasterType !== 'Earthquake' && disasterType !== 'Wildfire' && disasterType !== 'Hurricane' && disasterType !== 'Blizzard' && disasterType !== 'Power Plant Meltdown' && (
+          {disasterType /*&& disasterType !== 'Earthquake'*/ && disasterType !== 'Wildfire' && disasterType !== 'Hurricane' && disasterType !== 'Blizzard' && disasterType !== 'Power Plant Meltdown' && (
             <GoogleMap disasterType={disasterType} />
           )}
-          {/* {disasterType && (disasterType === 'Earthquake' || disasterType === 'Tsunami') && (
-            <iframe
-              src="path/to/your/pdf_or_image.pdf"
-              style={{ width: '100%', height: '100vh' }}
-              title="Disaster Information"
-            />
-          )} */}
         </div>
 
         <Accordion defaultActiveKey="0" className="accordion-sections">
