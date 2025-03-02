@@ -21,7 +21,7 @@ function App() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [closestLocation, setClosestLocation] = useState<{ lat: number; lng: number; name: string } | null>(null);
   console.log("Preparing apiKey");
-  const apiKey = 'AIzaSyAYfmTy4J6wwJT8DMj6XkU3cbi-ML56mmg'; // Provide a default value
+  const apiKey = 'AIzaSyA_DtEZoxsaLBIfR2cwiSEBnqJw9voY7Sk'; // Provide a default value
   console.log("apiKey set to: " + apiKey);
 
   //Gemini API get and response
@@ -39,10 +39,19 @@ function App() {
       
       // Customize directions based on disaster type
       let directionsPrompt;
-      const needsLocationBasedDirections = ['flood', 'earthquake', 'hurricane/tornado'].includes(disasterType.toLowerCase());
+      const needsLocationBasedDirections = ['flood', 'hurricane/tornado'].includes(disasterType.toLowerCase());
 
       if (needsLocationBasedDirections && location && closestLocation) {
-        directionsPrompt = `Given the ${disasterType}, provide directions from current location (${location.lat}, ${location.lng}) to the nearest shelter at ${closestLocation.name}. Include: 1) Distance and estimated time, 2) Key landmarks to watch for, 3) Main roads to take. Keep it brief and clear, 4) Return this information in raw.`;
+        directionsPrompt = `You are a navigation assistant. Respond ONLY in this EXACT format with NO additional text:
+
+Distance: [number] miles
+Time: [estimated minutes] minutes
+Main roads: [up to 3 main roads]
+Landmarks: [2 landmarks maximum]
+Safety note: [single line about ${disasterType} conditions]
+
+Provide directions from (${location.lat}, ${location.lng}) to ${closestLocation.name}.
+DO NOT provide any additional information or context beyond this format.`;
       } else if (disasterType.toLowerCase() === 'blizzard') {
         suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
         including but not limited to water, non-perishable food, and medications in a list of raw text.`;
