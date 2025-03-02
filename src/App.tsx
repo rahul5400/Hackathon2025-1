@@ -122,6 +122,10 @@ function App() {
           </Accordion.Item>
         </Accordion>
 
+        <div className="Reset-button">
+          <button style={{backgroundColor: "skyblue",color:"black"}}onClick={() => setShowPrompt(true)}>Reset</button>
+        </div>
+
         <div className="Contacts-box">
           <h1>Contact Numbers:</h1>
           <p>Delaware Emergency Services: (610) 565-8700</p>
