@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Accordion } from 'react-bootstrap';
+import { Accordion, Tab, Tabs } from 'react-bootstrap';
 import ShelterList from './components/ShelterList';
 import SafetyInfo from './components/SafetyInfo';
 import GoogleMap from './components/GoogleMap';
 import DisasterPrompt from './components/DisasterPrompt';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -19,14 +20,54 @@ function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
   const [disasterType, setDisasterType] = useState<string>(''); // for disaster type
   const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
+  const [suppliesResults, setSuppliesResults] = useState<string>("");
+  const [directionsResults, setDirectionsResults] = useState<string>(""); 
+  const [preventionResults, setPreventionResults] = useState<string>("");
+  console.log("Preparing apiKey");
+  const apiKey = process.env.REACT_APP_API_KEY || ''; // Provide a default value
+  console.log("apiKey set to: " + apiKey);
+  const [selectedTab, setSelectedTab] = useState(1);
+
+  //Gemini API get and response
+  const fetchData = async (disasterType: string, apiKey: string) => {
+    console.log("Running fetchData");
+    if (!apiKey) {
+      console.error("API key is missing");
+      return;
+    }
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const suppliesPrompt = `There is a natural disaster of: ${disasterType}. List the supplies needed in as few words as possible in raw text.`;
+    const directionsPrompt = `The disaster was ${disasterType}. List the directions to the nearest shelter in as few words.`;
+    const preventionPrompt = `The disaster was ${disasterType}. List ways to mitigate the adverse effects of ${disasterType} in as few words as possible.`;
+
+    const suppliesResponse = await model.generateContent(suppliesPrompt);
+    const directionsResponse = await model.generateContent(directionsPrompt);
+    const preventionResponse = await model.generateContent(preventionPrompt);
+
+    console.log(suppliesResponse.response.text());
+
+    setSuppliesResults(suppliesResponse.response.text());
+    setDirectionsResults(directionsResponse.response.text());
+    setPreventionResults(preventionResponse.response.text());
+  };
 
   useEffect(() => {
     setShowPrompt(true); // Show the prompt when the component mounts
   }, []);
 
+  useEffect(() => {
+    if (disasterType !== 'default') {
+      fetchData(disasterType, apiKey);
+    }
+  }, [disasterType, key]);
+
+  //Gemini
   const handleDisasterSelect = (selectedDisaster: string) => {
     setDisasterType(selectedDisaster);
     setShowPrompt(false);
+    fetchData(selectedDisaster, apiKey); // Call the API when a disaster is selected
   };
 
   //sets the local storage item to the api key the user inputed
@@ -39,6 +80,20 @@ function App() {
   function changeKey(event: React.ChangeEvent<HTMLInputElement>) {
     setKey(event.target.value);
   }
+
+
+  const renderDirectionsBoxContent = () => {
+    switch (selectedTab) {
+      case 1:
+        return suppliesResults;
+      case 2:
+        return directionsResults;
+      case 3:
+        return preventionResults;
+      default:
+        return '';
+    }
+  };
 
   return (
     <Router>
@@ -57,6 +112,7 @@ function App() {
             />
           )}
         </div>
+
 
         <Accordion defaultActiveKey="0" className="accordion-sections">
           <Accordion.Item eventKey="0">
@@ -93,6 +149,7 @@ function App() {
           <Route path="/safety-info" element={<SafetyInfo />} />
         </Routes>
       </div>
+
     </Router>
   );
 }
