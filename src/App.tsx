@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Accordion, Tab, Tabs } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 import ShelterList from './components/ShelterList';
 import SafetyInfo from './components/SafetyInfo';
 import GoogleMap from './components/GoogleMap';
@@ -70,18 +70,6 @@ function App() {
     fetchData(selectedDisaster, apiKey); // Call the API when a disaster is selected
   };
 
-  //sets the local storage item to the api key the user inputed
-  function handleSubmit() {
-    localStorage.setItem(saveKeyData, JSON.stringify(key));
-    window.location.reload(); //when making a mistake and changing the key again, I found that I have to reload the whole site before openai refreshes what it has stores for the local storage variable
-  }
-
-  //whenever there's a change it'll store the api key in a local state called key but it won't be set in the local storage until the user clicks the submit button
-  function changeKey(event: React.ChangeEvent<HTMLInputElement>) {
-    setKey(event.target.value);
-  }
-
-
   const renderDirectionsBoxContent = () => {
     switch (selectedTab) {
       case 1:
@@ -112,7 +100,6 @@ function App() {
             />
           )}
         </div>
-
 
         <Accordion defaultActiveKey="0" className="accordion-sections">
           <Accordion.Item eventKey="0">
@@ -149,7 +136,6 @@ function App() {
           <Route path="/safety-info" element={<SafetyInfo />} />
         </Routes>
       </div>
-
     </Router>
   );
 }
