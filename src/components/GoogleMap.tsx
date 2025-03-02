@@ -35,6 +35,11 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
             { lat: 39.57476806640625, lng: -75.75569152832031, name: 'Wildfire Shelter 1' },
             { lat: 39.80015687000223, lng: -75.52089364232909, name: 'Wildfire Shelter 2' },
           ];
+        case 'blizzard':
+          return [
+            { lat: 39.57476806640625, lng: -75.75569152832031, name: 'Blizzard Shelter 1' },
+            { lat: 39.80015687000223, lng: -75.52089364232909, name: 'Blizzard Shelter 2' },
+          ];
         case 'power-plant-meltdown':
           return [
             { lat: 39.57476806640625, lng: -75.75569152832031, name: 'Power Plant Meltdown Shelter 1' },
