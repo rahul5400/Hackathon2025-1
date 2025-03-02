@@ -92,7 +92,7 @@ function App() {
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
 
         <div className="map-box">
-          {disasterType && disasterType !== 'Hurricane/Tornado' && disasterType !== 'Blizzard' && disasterType !== 'Power Plant Meltdown' && (
+          {disasterType && /*disasterType !== 'Hurricane/Tornado' && disasterType !== 'Blizzard' &&*/ disasterType !== 'Power Plant Meltdown' && (
             <GoogleMap disasterType={disasterType} />
           )}
         </div>
