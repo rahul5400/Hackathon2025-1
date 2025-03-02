@@ -24,7 +24,7 @@ function App() {
   const [directionsResults, setDirectionsResults] = useState<string>(""); 
   const [preventionResults, setPreventionResults] = useState<string>("");
   console.log("Preparing apiKey");
-  const apiKey = process.env.REACT_APP_API_KEY || 'AIzaSyCvcEd60nJpCBGiM6bX-SqsNf78qVjN9Hc'; // Provide a default value
+  const apiKey = 'AIzaSyAYfmTy4J6wwJT8DMj6XkU3cbi-ML56mmg'; // Provide a default value
   console.log("apiKey set to: " + apiKey);
   const [selectedTab, setSelectedTab] = useState(1);
 
@@ -123,6 +123,10 @@ function App() {
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
+
+        <div className="Reset-button">
+          <button style={{backgroundColor: "skyblue",color:"black"}}onClick={() => setShowPrompt(true)}>Reset</button>
+        </div>
 
         <div className="Contacts-box">
           <h1>Contact Numbers:</h1>
