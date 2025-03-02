@@ -53,7 +53,7 @@ function App() {
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
 
         <div className="map-box">
-          {disasterType && disasterType !== 'Earthquake' && disasterType !== 'Tsunami' && (
+          {disasterType && disasterType !== 'Earthquake' && disasterType !== 'Wildfire' && disasterType !== 'Hurricane' && disasterType !== 'Blizzard' && disasterType !== 'Power Plant Meltdown' && (
             <GoogleMap disasterType={disasterType} />
           )}
         </div>
@@ -68,7 +68,6 @@ function App() {
               <option value="Flood">Flood</option>
               <option value="Hurricane/Tornado">Hurricane/Tornado</option>
               <option value="Power Plant Meltdown">Power Plant Meltdown</option>
-              <option value="Tsunami">Tsunami</option>
               <option value="Wildfire">Wildfire</option>
             </Form.Control>
           </Form>

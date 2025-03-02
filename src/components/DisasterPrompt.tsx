@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import myImage from './salem-evac.jpg';
-import './DisasterPrompt.css'; // Import the CSS file
 
 interface DisasterPromptProps {
   show: boolean;
@@ -17,7 +16,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
 
   if (selectedDisaster === 'Power Plant Meltdown') {
     return (
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '100vh', width: '100%', objectFit: 'cover' }}>
         <img src={myImage} alt="Power Plant Evac Map"/>
       </div>
     );
@@ -38,7 +37,6 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
               <option value="Flood">Flood</option>
               <option value="Hurricane/Tornado">Hurricane/Tornado</option>
               <option value="Power Plant Meltdown">Power Plant Meltdown</option>
-              <option value="Tsunami">Tsunami</option>
               <option value="Wildfire">Wildfire</option>
             </Form.Control>
           </Form.Group>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import myImage from './salem-evac.jpg';
 
 interface Location {
   lat: number;
@@ -36,11 +35,6 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
             { lat: 39.57476806640625, lng: -75.75569152832031, name: 'Wildfire Shelter 1' },
             { lat: 39.80015687000223, lng: -75.52089364232909, name: 'Wildfire Shelter 2' },
           ];
-        case 'tsunami':
-          return [
-            { lat: 39.57476806640625, lng: -75.75569152832031, name: 'Tsunami Shelter 1' },
-            { lat: 39.80015687000223, lng: -75.52089364232909, name: 'Tsunami Shelter 2' },
-          ];
         case 'power-plant-meltdown':
           return [
             { lat: 39.57476806640625, lng: -75.75569152832031, name: 'Power Plant Meltdown Shelter 1' },
@@ -60,7 +54,7 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
   }, [disasterType]);
 
   useEffect(() => {
-    if (!disasterType || disasterType === 'earthquake' || disasterType === 'tsunami' || disasterType === 'power-plant-meltdown') {
+    if (!disasterType || disasterType === 'blizzard' || disasterType === 'wildfire' || disasterType === 'earthquake' || disasterType === 'power-plant-meltdown' || disasterType === 'hurricane') {
       return;
     }
 
@@ -250,16 +244,6 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
       document.head.removeChild(script);
     };
   }, [locations, disasterType]);
-
-  if (disasterType === 'power-plant-meltdown') {
-    return (
-      <div style={{ height: '100vh', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img src={myImage} alt="Evac Map" style={{ maxHeight: '100%', maxWidth: '100%' }} />
-      </div>
-    );
-  } else if (disasterType === 'earthquake' || disasterType === 'tsunami') {
-    return null;
-  }
 
   return <div id="map" style={{ height: '100vh', width: '100%' }}></div>;
 };
