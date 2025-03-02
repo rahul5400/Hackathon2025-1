@@ -8,9 +8,10 @@ interface DisasterPromptProps {
 }
 
 const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
-  const [selectedDisaster, setSelectedDisaster] = useState<string>('default');
+  const [selectedDisaster, setSelectedDisaster] = useState<string>('Blizzard');
 
   const handleSubmit = () => {
+    console.log("Running the DisasterPrompt handleSubmit thing");
     onClose(selectedDisaster);
   };
 
@@ -20,10 +21,10 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
         <img src={myImage} alt="Power Plant Evac Map"/>
       </div>
     );
-  }
+  } else {
 
   return (
-    <Modal show={show} onHide={() => onClose('default')}>
+    <Modal show={show} onHide={() => onClose('value')}>
       <Modal.Header closeButton>
         <Modal.Title>Select Disaster Type</Modal.Title>
       </Modal.Header>
@@ -43,7 +44,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => onClose('default')}>
+        <Button variant="secondary" onClick={() => onClose(selectedDisaster)}>
           Close
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
@@ -52,6 +53,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
       </Modal.Footer>
     </Modal>
   );
+}
 };
 
 export default DisasterPrompt;

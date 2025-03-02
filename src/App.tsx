@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Accordion } from 'react-bootstrap';
@@ -8,122 +8,203 @@ import GoogleMap from './components/GoogleMap';
 import DisasterPrompt from './components/DisasterPrompt';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-//local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
-let keyData = "";
-const saveKeyData = "MYKEY";
-const prevKey = localStorage.getItem(saveKeyData); //so it'll look like: MYKEY: <api_key_value here> in the local storage when you inspect
-if (prevKey !== null) {
-  keyData = JSON.parse(prevKey);
-}
 
 function App() {
-  const [key, setKey] = useState<string>(keyData); //for api key input
-  const [disasterType, setDisasterType] = useState<string>(''); // for disaster type
+  console.log("Starting App");
+
+  const [disasterType, setDisasterType] = useState<string>("Blizzard"); // for disaster type. Default = Blizzard
+  console.log("boot set to true")
   const [showPrompt, setShowPrompt] = useState<boolean>(true); // for showing the disaster prompt
+  
   const [suppliesResults, setSuppliesResults] = useState<string>("");
   const [directionsResults, setDirectionsResults] = useState<string>(""); 
   const [preventionResults, setPreventionResults] = useState<string>("");
   console.log("Preparing apiKey");
   const apiKey = 'AIzaSyAYfmTy4J6wwJT8DMj6XkU3cbi-ML56mmg'; // Provide a default value
   console.log("apiKey set to: " + apiKey);
-  const [selectedTab, setSelectedTab] = useState(1);
 
-  //Gemini API get and response
+  //Gemini API get and response function
   const fetchData = async (disasterType: string, apiKey: string) => {
     console.log("Running fetchData");
+
+    //Incase the API key is gone.
     if (!apiKey) {
       console.error("API key is missing");
       return;
     }
+
+    //
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const suppliesPrompt = `There is a natural disaster of: ${disasterType}. List the supplies needed in as few words as possible in raw text.`;
-    const directionsPrompt = `The disaster was ${disasterType}. List the directions to the nearest shelter in as few words.`;
-    const preventionPrompt = `The disaster was ${disasterType}. List ways to mitigate the adverse effects of ${disasterType} in as few words as possible.`;
+    let suppliesPrompt = `say squash`;
+    let directionsPrompt = `say apple`;
+    let preventionPrompt = 'say orange';
+    console.log(" skethy Disaster type: " + disasterType);
+    
+    if (disasterType === "Blizzard") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+      including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Stay indoors
+      Wear multiple layers of loose, dry clothing.
+      Drink plenty of water and eat warming foods.
+      If you must go outside, dress in layers, cover exposed skin, and exercise to keep warm.
+      Conserve home energy by lowering heat and closing doors and vents in unused rooms.
+      Stay entertained with low-energy activities like games and reading.
+      Have supplies ready, including water, non-perishable food, and medications`;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you over a hot spot or near a plate boundary?" in the response in raw text';
+    }
 
+    else if (disasterType === "Earthquake") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Find any earthquake resistant buildings 
+      If none are around you and you are outside
+      stay away from tall buildings and buildings in general 
+      If not possible to get away from buildings(you are inside:
+      take cover under solid stable table of desk
+      Move to a hallway/ against an inside wall
+      If you are in bed, turn face down and cover your head with a pillow. 
+      stay indoors and avoid doorways.
+      Designate safe meeting place for family`;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you over a hot spot or near a plate boundary?" in the response in raw text ';
+    }
+
+    else if (disasterType === "Flood") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Are you downland, or near a river 
+      Move to higher ground, above the water basin 
+      Last resort climb on the roof 
+      Stay away from electrical wires and water
+      Do not walk through moving water
+      Do not drive through flooded areas`;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you downland, or near a river?" in the response in raw text';
+    }
+
+    else if (disasterType === "Hurricane/Tornado") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Go to the basement and stay in the center of a room with no glass
+      Stay away from windows or other glass 
+      If you are outside or in a car, find a ditch or low lying area and lay flat
+      Do not try to outrun a tornado
+      `;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. ';
+    }
+    
+    else if (disasterType === "Power Plant Meltdown") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Shelter in place 
+      Turn off all appliances that bring outside air in 
+      Close the fireplace 
+      If outside seek shelter
+      close all windows and doors
+      Stay inside until authorities say it is safe
+      Stay tuned to local news for updates`;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you over a hot spot or near a plate boundary?" in the response in raw text';
+    }
+
+    else if (disasterType === "Wildfire") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Take authority made evac route 
+      If caught in the fire, find an area clear of vegetation
+      Lie low to the ground 
+      Cover yourself with wet cloth
+      Breathe close to the ground to reduce smoke intake 
+      Reduce exposure to smoke as much as possible
+
+      `;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you over a hot spot or near a plate boundary?" in the response in raw text ';
+    }
+
+
+    //Stores the output of the AI in {item}Response
+    //Gemini.generateContent("Input String")
     const suppliesResponse = await model.generateContent(suppliesPrompt);
     const directionsResponse = await model.generateContent(directionsPrompt);
     const preventionResponse = await model.generateContent(preventionPrompt);
 
+    //Set the response to the state
+    setSuppliesResults(suppliesResponse.response.text());
+    setDirectionsResults(directionsResponse.response.text());
+    setPreventionResults(preventionResponse.response.text());
+    console.log("Printing out gemini output");
     console.log(suppliesResponse.response.text());
+    console.log(directionsResponse.response.text());
+    console.log(preventionResponse.response.text());
 
     setSuppliesResults(suppliesResponse.response.text());
     setDirectionsResults(directionsResponse.response.text());
     setPreventionResults(preventionResponse.response.text());
+
   };
-
-  useEffect(() => {
-    setShowPrompt(true); // Show the prompt when the component mounts
-  }, []);
-
-  useEffect(() => {
-    if (disasterType !== 'default') {
-      fetchData(disasterType, apiKey);
-    }
-  }, [disasterType, key]);
 
   //Gemini
   const handleDisasterSelect = (selectedDisaster: string) => {
+    console.log("Running DisasterSelect");
     setDisasterType(selectedDisaster);
+    console.log("setShowPrompt to false");
     setShowPrompt(false);
     fetchData(selectedDisaster, apiKey); // Call the API when a disaster is selected
   };
 
-  const renderDirectionsBoxContent = () => {
-    switch (selectedTab) {
-      case 1:
-        return suppliesResults;
-      case 2:
-        return directionsResults;
-      case 3:
-        return preventionResults;
-      default:
-        return '';
-    }
-  };
+  console.log({disasterType});
 
   return (
-    <Router>
-      <div className="App">
+      <div className="Everything">
         <DisasterPrompt show={showPrompt} onClose={handleDisasterSelect} />
 
         <div className="map-box">
-          {disasterType && disasterType !== 'Earthquake' && disasterType !== 'Wildfire' && disasterType !== 'Hurricane' && disasterType !== 'Blizzard' && disasterType !== 'Power Plant Meltdown' && (
+          {disasterType && /*disasterType !== 'Hurricane/Tornado' && disasterType !== 'Blizzard' &&*/ disasterType !== 'Power Plant Meltdown' && (
             <GoogleMap disasterType={disasterType} />
           )}
-          {disasterType && (disasterType === 'Earthquake' || disasterType === 'Tsunami') && (
-            <iframe
-              src="path/to/your/pdf_or_image.pdf"
-              style={{ width: '100%', height: '100vh' }}
-              title="Disaster Information"
-            />
-          )}
+
+          
         </div>
 
         <Accordion defaultActiveKey="0" className="accordion-sections">
           <Accordion.Item eventKey="0">
-            <Accordion.Header>Directions</Accordion.Header>
-            <Accordion.Body>
-              <div className="directions-box">Directions go this way or something</div>
+            <Accordion.Header className="accordion-header"><h2>Directions</h2></Accordion.Header>
+            <Accordion.Body className="accordion-body">
+              <div className="directions-box">{directionsResults}</div>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">
-            <Accordion.Header>Resources</Accordion.Header>
-            <Accordion.Body>
-              <ShelterList />
+            <Accordion.Header><h2>Resources/Supplies</h2></Accordion.Header>
+            
+            <Accordion.Body className="accordion-body">
+            <div className="Resources-box">{suppliesResults}</div>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="2">
-            <Accordion.Header>Mitigation</Accordion.Header>
-            <Accordion.Body>
-              <SafetyInfo />
+            <Accordion.Header><h2>Mitigation</h2></Accordion.Header>
+            
+            <Accordion.Body className="accordion-body">
+            <div className="Mitigation-box">{preventionResults}</div>
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
 
         <div className="Reset-button">
-          <button style={{backgroundColor: "skyblue",color:"black"}}onClick={() => setShowPrompt(true)}>Reset</button>
+          <button style={{backgroundColor: "skyblue",color:"black"}}onClick={() => {
+            console.log("Reset Button Called");
+            setShowPrompt(true);
+            }}>Reset</button>
         </div>
 
         <div className="Contacts-box">
@@ -134,14 +215,7 @@ function App() {
           <p>Red Cross: (800) 733-2767</p>
           <p>Salvation Army: (800) 725-2769</p>
         </div>
-
-        <Routes>
-          <Route path="/shelters" element={<ShelterList />} />
-          <Route path="/safety-info" element={<SafetyInfo />} />
-        </Routes>
       </div>
-    </Router>
   );
 }
-
 export default App;
