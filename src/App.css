@@ -44,15 +44,7 @@ html, body {
   background-color: lightgreen;
 }
 
-.tab-button {
-  position: relative;
-  height: 100%;
-  width: 33.33%;
-  background-color: gray;
-  border: 3px solid dimgray;
-  border-radius: 3px;
-  z-index: 1;
-}
+
 
 .directions-box {
   background-color: lightgoldenrodyellow;
@@ -63,6 +55,19 @@ html, body {
   width: 100%;
   background-color: lightpink;
   padding: 20px;
+}
+
+.Reset-button{
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  z-index: 1;
+  border: 10px black;
+  border-width: 5px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
 }
 
 .content-wrapper {
