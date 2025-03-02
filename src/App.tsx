@@ -43,11 +43,10 @@ function App() {
     console.log(" skethy Disaster type: " + disasterType);
     
     if (disasterType === "Blizzard") {
-      console.log("Blizzard detected");
-      suppliesPrompt = `There is a Blizzard happening around me right now, please tell me supplies needed to survive,
-       including water, non-perishable food, and medications and other items needed for survival in a bulleted list of raw text.`;
-      directionsPrompt = `There is a Blizzard happening around me right now, please tell me directions of what to do 
-      in case of a Blizzard in raw text. please include the following list of directions:
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+      including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
       Stay indoors
       Wear multiple layers of loose, dry clothing.
       Drink plenty of water and eat warming foods.
@@ -55,10 +54,83 @@ function App() {
       Conserve home energy by lowering heat and closing doors and vents in unused rooms.
       Stay entertained with low-energy activities like games and reading.
       Have supplies ready, including water, non-perishable food, and medications`;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you over a hot spot or near a plate boundary?" in the response in raw text';
+    }
 
-      preventionPrompt = ('There is a Blizzard happening around me right now, please tell me ways to mitigate the adverse effects of a Blizzard on my house and family in raw text. Please include to drip your sinks so you pipes dont freeze.');
+    else if (disasterType === "Earthquake") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Find any earthquake resistant buildings 
+      If none are around you and you are outside
+      stay away from tall buildings and buildings in general 
+      If not possible to get away from buildings(you are inside:
+      take cover under solid stable table of desk
+      Move to a hallway/ against an inside wall
+      If you are in bed, turn face down and cover your head with a pillow. 
+      stay indoors and avoid doorways.
+      Designate safe meeting place for family`;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you over a hot spot or near a plate boundary?" in the response in raw text ';
+    }
+
+    else if (disasterType === "Flood") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Are you downland, or near a river 
+      Move to higher ground, above the water basin 
+      Last resort climb on the roof 
+      Stay away from electrical wires and water
+      Do not walk through moving water
+      Do not drive through flooded areas`;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you downland, or near a river?" in the response in raw text';
+    }
+
+    else if (disasterType === "Hurricane/Tornado") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Go to the basement and stay in the center of a room with no glass
+      Stay away from windows or other glass 
+      If you are outside or in a car, find a ditch or low lying area and lay flat
+      Do not try to outrun a tornado
+      `;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. ';
     }
     
+    else if (disasterType === "Power Plant Meltdown") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Shelter in place 
+      Turn off all appliances that bring outside air in 
+      Close the fireplace 
+      If outside seek shelter
+      close all windows and doors
+      Stay inside until authorities say it is safe
+      Stay tuned to local news for updates`;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you over a hot spot or near a plate boundary?" in the response in raw text';
+    }
+
+    else if (disasterType === "Wildfire") {
+      suppliesPrompt = `There is an ${disasterType} happening around me right now, please tell me supplies needed to survive,
+       including but not limited to water, non-perishable food, and medications in a list of raw text.`;
+      directionsPrompt = `There is a ${disasterType} happening around me right now, please tell me directions of what to do 
+      in case of a ${disasterType} in raw text. please include the following list of directions:
+      Take authority made evac route 
+      If caught in the fire, find an area clear of vegetation
+      Lie low to the ground 
+      Cover yourself with wet cloth
+      Breathe close to the ground to reduce smoke intake 
+      Reduce exposure to smoke as much as possible
+
+      `;
+      preventionPrompt = 'There is a '+ disasterType + ' happening around me right now, please tell me ways to mitigate the adverse effects of a  '+ disasterType + ' on my house and family in raw text. Please include "Are you over a hot spot or near a plate boundary?" in the response in raw text ';
+    }
 
 
     //Stores the output of the AI in {item}Response

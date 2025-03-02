@@ -49,6 +49,11 @@ html, body {
     padding-top: 10px;
   }
 
+.Resources-box {
+  background-color: lightgoldenrodyellow;
+  padding-top: 10px;
+}
+
 .Contacts-box {
   width: 100%;
   background-color: lightpink;
