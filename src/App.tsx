@@ -24,7 +24,7 @@ function App() {
   const [directionsResults, setDirectionsResults] = useState<string>(""); 
   const [preventionResults, setPreventionResults] = useState<string>("");
   console.log("Preparing apiKey");
-  const apiKey = process.env.REACT_APP_API_KEY || ''; // Provide a default value
+  const apiKey = 'AIzaSyAYfmTy4J6wwJT8DMj6XkU3cbi-ML56mmg'; // Provide a default value
   console.log("apiKey set to: " + apiKey);
   const [selectedTab, setSelectedTab] = useState(1);
 
