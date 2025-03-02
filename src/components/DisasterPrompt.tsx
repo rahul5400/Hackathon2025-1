@@ -8,9 +8,10 @@ interface DisasterPromptProps {
 }
 
 const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
-  const [selectedDisaster, setSelectedDisaster] = useState<string>('blizzard');
+  const [selectedDisaster, setSelectedDisaster] = useState<string>('Blizzard');
 
   const handleSubmit = () => {
+    console.log("Running the DisasterPrompt handleSubmit thing");
     onClose(selectedDisaster);
   };
 
@@ -20,7 +21,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
         <img src={myImage} alt="Power Plant Evac Map"/>
       </div>
     );
-  }
+  } else {
 
   return (
     <Modal show={show} onHide={() => onClose('value')}>
@@ -52,6 +53,7 @@ const DisasterPrompt: React.FC<DisasterPromptProps> = ({ show, onClose }) => {
       </Modal.Footer>
     </Modal>
   );
+}
 };
 
 export default DisasterPrompt;
