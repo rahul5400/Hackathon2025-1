@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { fetchWeatherData } from './nwsApi';
 interface Location {
   lat: number;
   lng: number;
@@ -8,6 +8,7 @@ interface Location {
 
 const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
   const [locations, setLocations] = useState<Location[]>([]);
+  const [weatherData, setWeatherData] = useState<any[]>([]);
 
   useEffect(() => {
     // Update the list of locations based on the disaster type
@@ -59,11 +60,35 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
   }, [disasterType]);
 
   useEffect(() => {
-    if (!disasterType || disasterType === 'blizzard' || disasterType === 'wildfire' || disasterType === 'earthquake' || disasterType === 'power-plant-meltdown' || disasterType === 'hurricane') {
+    const fetchWeatherForLocations = async () => {
+      try {
+        const weatherPromises = locations.map(location => fetchWeatherData(location.lat, location.lng));
+        const weatherResults = await Promise.all(weatherPromises);
+        console.log('Weather data fetched:', weatherResults);
+        setWeatherData(weatherResults);
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+      }
+    };
+    
+    if (locations.length > 0) {
+      fetchWeatherForLocations();
+    }
+  }, [locations]);
+
+  useEffect(() => {
+    // Remove or modify this condition if you want the map to show for all disaster types
+    if (!disasterType) {
       return;
     }
-
+    const mapElement = document.getElementById('map');
+    if (!mapElement) {
+      console.error('Map element not found');
+      return;
+    }
+  
     let map: any;
+    
 
     // Haversine formula to calculate distance between two points
     const haversineDistance = (coords1: any, coords2: any) => {
@@ -145,24 +170,50 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
         },
       ];
 
-      map = new (window as any).google.maps.Map(document.getElementById('map') as HTMLElement, {
+      map = new (window as any).google.maps.Map(document.getElementById('map'), {
         center: center,
         zoom: 10,
         styles: mapStyles,
       });
 
+      if (map)
+
       // Add markers for all shelter locations
-      locations.forEach((location) => {
+      locations.forEach((location, index) => {
         const marker = new (window as any).google.maps.Marker({
           map,
           position: { lat: location.lat, lng: location.lng },
           title: location.name,
         });
-
+      
+        // Debug the structure of weather data
+        console.log(`Weather data for ${location.name}:`, weatherData[index]);
+        
+        let weatherInfo = '';
+        try {
+          if (weatherData && 
+              weatherData[index] && 
+              weatherData[index].properties && 
+              weatherData[index].properties.periods && 
+              weatherData[index].properties.periods.length > 0) {
+            
+            const currentForecast = weatherData[index].properties.periods[0];
+            weatherInfo = `
+              <p><strong>Weather:</strong> ${currentForecast.shortForecast}</p>
+              <p><strong>Temperature:</strong> ${currentForecast.temperature}° ${currentForecast.temperatureUnit}</p>
+              <p><strong>Wind:</strong> ${currentForecast.windSpeed} ${currentForecast.windDirection}</p>`;
+          } else {
+            weatherInfo = `<p><strong>Weather data unavailable</strong></p>`;
+          }
+        } catch (error) {
+          console.error(`Error processing weather data for ${location.name}:`, error);
+          weatherInfo = `<p><strong>Error processing weather data</strong></p>`;
+        }
+      
         const infoWindow = new (window as any).google.maps.InfoWindow({
-          content: `<div style="color: black;"><h3>${location.name}</h3></div>`, // Inline CSS for black text color
+          content: `<div style="color: black;"><h3>${location.name}</h3>${weatherInfo}</div>`,
         });
-
+      
         marker.addListener('click', () => {
           infoWindow.open(map, marker);
         });
@@ -248,7 +299,7 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
     return () => {
       document.head.removeChild(script);
     };
-  }, [locations, disasterType]);
+  }, [locations, disasterType, weatherData]);
 
   return <div id="map" style={{ height: '100vh', width: '100%' }}></div>;
 };
