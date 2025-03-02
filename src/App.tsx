@@ -27,7 +27,7 @@ function App() {
   console.log("Preparing apiKey");
   const apiKey = process.env.REACT_APP_API_KEY || ''; // Provide a default value
   console.log("apiKey set to: " + apiKey);
-  const [slectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(1);
 
   //Gemini API get and response
   const fetchData = async (disasterType: string, apiKey: string) => {
@@ -40,8 +40,8 @@ function App() {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const suppliesPrompt = `There is a natural disaster of: ${disasterType}. List the supplies needed in as few words as possible in raw text.`;
-    const directionsPrompt = `The disaster was ${disasterType}. List the directions to the nearest shelter in as few words as possible.`;
-    const preventionPrompt = `The disaster was ${disasterType}. List ways to mitigate the adverse effects of ${disasterType}.`;
+    const directionsPrompt = `The disaster was ${disasterType}. List the directions to the nearest shelter in as few words.`;
+    const preventionPrompt = `The disaster was ${disasterType}. List ways to mitigate the adverse effects of ${disasterType} in as few words as possible.`;
 
     const suppliesResponse = await model.generateContent(suppliesPrompt);
     const directionsResponse = await model.generateContent(directionsPrompt);
@@ -85,6 +85,20 @@ function App() {
   function changeKey(event: React.ChangeEvent<HTMLInputElement>) {
     setKey(event.target.value);
   }
+
+  const renderDirectionsBoxContent = () => {
+    switch (selectedTab) {
+      case 1:
+        return suppliesResults;
+      case 2:
+        return directionsResults;
+      case 3:
+        return preventionResults;
+      default:
+        return '';
+    }
+  };
+
   return (
     <Router>
       <div className="App">
@@ -109,12 +123,12 @@ function App() {
         </div>
 
         <div className="tab-bar">
-          <div className="tab-button" style={{backgroundColor: slectedTab === 1 ? "darkgray" : "gray"}} onClick={()=>selectTab(1)}></div>
-          <div className="tab-button" style={{backgroundColor: slectedTab === 2 ? "darkgray" : "gray"}} onClick={()=>selectTab(2)}></div>
-          <div className="tab-button" style={{backgroundColor: slectedTab === 3 ? "darkgray" : "gray"}} onClick={()=>selectTab(3)}></div>
+          <div className="tab-button" style={{backgroundColor: selectedTab === 1 ? "darkgray" : "gray"}} onClick={()=>selectTab(1)}></div>
+          <div className="tab-button" style={{backgroundColor: selectedTab === 2 ? "darkgray" : "gray"}} onClick={()=>selectTab(2)}></div>
+          <div className="tab-button" style={{backgroundColor: selectedTab === 3 ? "darkgray" : "gray"}} onClick={()=>selectTab(3)}></div>
         </div>
 
-        <div className="directions-box">{directionsResults}</div>
+        <div className="directions-box">{renderDirectionsBoxContent()}</div>
 
         <div className="Contacts-box">
           <h1>Contact Numbers:</h1>
