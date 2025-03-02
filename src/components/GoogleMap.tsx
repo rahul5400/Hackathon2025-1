@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import mapStyles from '../mapStyles.json'; // Import the JSON file
+
 import { fetchWeatherData } from './nwsApi';
 interface Location {
   lat: number;
@@ -110,65 +112,6 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
         (acc, loc) => ({ lat: acc.lat + loc.lat / locations.length, lng: acc.lng + loc.lng / locations.length }),
         { lat: 0, lng: 0 }
       );
-
-      // Define custom map styles
-      const mapStyles = [
-        {
-          featureType: 'poi',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'poi.business',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'poi.attraction',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'poi.place_of_worship',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'poi.school',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'poi.sports_complex',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'transit',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'road',
-          elementType: 'labels',
-          stylers: [{ visibility: 'off' }],
-        },
-        {
-          featureType: 'administrative',
-          elementType: 'labels',
-          stylers: [{ visibility: 'on' }],
-        },
-        {
-          featureType: 'administrative.locality',
-          elementType: 'labels',
-          stylers: [{ visibility: 'on' }],
-        },
-      ];
 
       map = new (window as any).google.maps.Map(document.getElementById('map'), {
         center: center,

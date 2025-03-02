@@ -65,6 +65,18 @@ html, body {
   padding: 20px;
 }
 
+.Reset-button{
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  z-index: 1;
+  border-radius: px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
 .content-wrapper {
   flex: 1;
   display: flex;
