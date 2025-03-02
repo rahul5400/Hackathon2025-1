@@ -20,6 +20,7 @@ function App() {
   const [preventionResults, setPreventionResults] = useState<string>("");
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [closestLocation, setClosestLocation] = useState<{ lat: number; lng: number; name: string } | null>(null);
+  const [availableShelters, setAvailableShelters] = useState<Array<{name: string; lat: number; lng: number; type: string[]}>>([]);
   console.log("Preparing apiKey");
   const apiKey = 'AIzaSyAYfmTy4J6wwJT8DMj6XkU3cbi-ML56mmg'; // Provide a default value
   console.log("apiKey set to: " + apiKey);
@@ -164,6 +165,10 @@ function App() {
     setClosestLocation(location);
   };
 
+  const handleShelterListChange = (shelters: Array<{name: string; lat: number; lng: number; type: string[]}>) => {
+    setAvailableShelters(shelters);
+  };
+
   const renderContent = () => {
     if (!disasterType) return null;
     if (disasterType === 'power plant meltdown') {
@@ -181,7 +186,12 @@ function App() {
         </div>
       );
     }
-    return <GoogleMap disasterType={disasterType} onLocationChange={handleLocationChange} onClosestLocationChange={handleClosestLocationChange} />;
+    return <GoogleMap 
+      disasterType={disasterType} 
+      onLocationChange={handleLocationChange} 
+      onClosestLocationChange={handleClosestLocationChange}
+      onShelterListChange={handleShelterListChange}
+    />;
   };
 
   return (
