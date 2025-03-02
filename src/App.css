@@ -37,24 +37,33 @@ html, body {
 
 }
 
-.tab-bar {
-  display: flex;
-  height: 5%;
+
+
+.Directions-box {
+  background-color: lightgoldenrodyellow;
+  padding-top: 10px;
   width: 100%;
-  background-color: lightgreen;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5%;
 }
-
-
-
-.directions-box {
+.Resources-box {
   background-color: lightgoldenrodyellow;
   padding-top: 10px;
 }
+
+  .Mitigation-box {
+    background-color: lightgoldenrodyellow;
+    padding-top: 10px;
+  }
 
 .Contacts-box {
   width: 100%;
   background-color: lightpink;
   padding: 20px;
+  
 }
 
 .Reset-button{
@@ -63,11 +72,12 @@ html, body {
   right: 5%;
   z-index: 1;
   border: 10px black;
-  border-width: 5px black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+  border-radius: 100%;
+  background-color: white;
 }
 
 .content-wrapper {
