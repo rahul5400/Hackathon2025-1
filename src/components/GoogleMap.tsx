@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import mapStyles from '../mapStyles.json'; // Import the JSON file
 
-
 interface Location {
   lat: number;
   lng: number;
   name: string;
 }
 
-const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
+interface GoogleMapProps {
+  disasterType: string;
+  onLocationChange: (location: { lat: number; lng: number }) => void;
+  onClosestLocationChange: (location: { lat: number; lng: number; name: string }) => void;
+}
+
+const GoogleMap: React.FC<GoogleMapProps> = ({ disasterType, onLocationChange, onClosestLocationChange }) => {
   const [locations, setLocations] = useState<Location[]>([]);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
     // Update the list of locations based on the disaster type
@@ -61,7 +67,8 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
   }, [disasterType]);
 
   useEffect(() => {
-    if (!disasterType || disasterType === 'blizzard' || disasterType === 'wildfire' || disasterType === 'earthquake' || disasterType === 'power-plant-meltdown' || disasterType === 'hurricane') {
+    // Remove 'blizzard' from this condition to allow it to set properly
+    if (!disasterType || disasterType === 'wildfire') {
       return;
     }
 
@@ -119,6 +126,9 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
               lng: position.coords.longitude,
             };
 
+            setUserLocation(userLocation);
+            onLocationChange(userLocation); // Pass the location to the parent component
+
             // Find the closest location
             let closestLocation = locations[0];
             let minDistance = haversineDistance(userLocation, locations[0]);
@@ -130,6 +140,9 @@ const GoogleMap: React.FC<{ disasterType: string }> = ({ disasterType }) => {
                 minDistance = distance;
               }
             }
+
+            // Pass the closest location to the parent component
+            onClosestLocationChange(closestLocation);
 
             // Add user's location marker
             new (window as any).google.maps.Marker({
