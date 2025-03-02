@@ -27,12 +27,11 @@ html, body {
   background-color: tan;
   position: absolute;
   width: 100%;
-  height: 30%;
+  height: 10%;
   display: flex;
   color: offwhite;
-  align-items: center;
-  justify-content: center;
   font-size: 2rem;
+
 }
 
 .tab-bar{

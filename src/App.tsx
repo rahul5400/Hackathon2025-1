@@ -8,7 +8,6 @@ import SafetyInfo from './components/SafetyInfo';
 import GoogleMap from './components/GoogleMap';
 import DisasterPrompt from './components/DisasterPrompt';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import dotenv from 'dotenv';
 
 //local storage and API Key: key should be entered in by the user and will be stored in local storage (NOT session storage)
 let keyData = "";
@@ -18,8 +17,6 @@ if (prevKey !== null) {
   keyData = JSON.parse(prevKey);
 }
 
-
-
 function App() {
   const [key, setKey] = useState<string>(keyData); //for api key input
   const [disasterType, setDisasterType] = useState<string>('default'); // for disaster type
@@ -27,46 +24,53 @@ function App() {
   const [suppliesResults, setSuppliesResults] = useState<string>("");
   const [directionsResults, setDirectionsResults] = useState<string>(""); 
   const [preventionResults, setPreventionResults] = useState<string>("");
-  const apiKey = process.env.API_KEY;
+  console.log("Preparing apiKey");
+  const apiKey = process.env.REACT_APP_API_KEY || ''; // Provide a default value
+  console.log("apiKey set to: " + apiKey);
   const [slectedTab, setSelectedTab] = useState(1);
+
+  //Gemini API get and response
+  const fetchData = async (disasterType: string, apiKey: string) => {
+    console.log("Running fetchData");
+    if (!apiKey) {
+      console.error("API key is missing");
+      return;
+    }
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const suppliesPrompt = `There is a natural disaster of: ${disasterType}. List the supplies needed in as few words as possible in raw text.`;
+    const directionsPrompt = `The disaster was ${disasterType}. List the directions to the nearest shelter in as few words as possible.`;
+    const preventionPrompt = `The disaster was ${disasterType}. List ways to mitigate the adverse effects of ${disasterType}.`;
+
+    const suppliesResponse = await model.generateContent(suppliesPrompt);
+    const directionsResponse = await model.generateContent(directionsPrompt);
+    const preventionResponse = await model.generateContent(preventionPrompt);
+
+    console.log(suppliesResponse.response.text());
+
+    setSuppliesResults(suppliesResponse.response.text());
+    setDirectionsResults(directionsResponse.response.text());
+    setPreventionResults(preventionResponse.response.text());
+  };
 
   useEffect(() => {
     setShowPrompt(true); // Show the prompt when the component mounts
   }, []);
 
-  const handleDisasterSelect = (selectedDisaster: string) => {
-    setDisasterType(selectedDisaster);
-    setShowPrompt(false);
-  };
-
   useEffect(() => {
     if (disasterType !== 'default') {
-      const fetchData = async () => {
-        if (!apiKey) {
-          console.error("API key is missing");
-          return;
-        }
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-        const suppliesPrompt = `The disaster was ${disasterType}. List the supplies needed.`;
-        const directionsPrompt = `The disaster was ${disasterType}. List the directions to the nearest shelter.`;
-        const preventionPrompt = `The disaster was ${disasterType}. List the prevention methods.`;
-
-        const suppliesResponse = await model.generateContent(suppliesPrompt);
-        const directionsResponse = await model.generateContent(directionsPrompt);
-        const preventionResponse = await model.generateContent(preventionPrompt);
-
-        setSuppliesResults(suppliesResponse.response.text());
-        setDirectionsResults(directionsResponse.response.text());
-        setPreventionResults(preventionResponse.response.text());
-      };
-
-      fetchData();
+      fetchData(disasterType, apiKey);
     }
   }, [disasterType, key]);
 
-  
+  //Gemini
+  const handleDisasterSelect = (selectedDisaster: string) => {
+    setDisasterType(selectedDisaster);
+    setShowPrompt(false);
+    fetchData(selectedDisaster, apiKey); // Call the API when a disaster is selected
+  };
+
   const selectTab = (selectedTab: number) => {
     setSelectedTab(selectedTab);
   }
@@ -91,6 +95,7 @@ function App() {
             <GoogleMap disasterType={disasterType} />
         </div>
 
+
         <div className="disaster-type">
           <Form>
             <Form.Label>Disaster Type:</Form.Label>
@@ -109,7 +114,7 @@ function App() {
           <div className="tab-button" style={{backgroundColor: slectedTab === 3 ? "darkgray" : "gray"}} onClick={()=>selectTab(3)}></div>
         </div>
 
-        <div className="directions-box">Directions go this way or something</div>
+        <div className="directions-box">{directionsResults}</div>
 
         <div className="Contacts-box">
           <h1>Contact Numbers:</h1>
@@ -119,24 +124,8 @@ function App() {
           <p>Red Cross: (800) 733-2767</p>
           <p>Salvation Army: (800) 725-2769</p>
           </div>
-
-        <Routes>
-          <Route path="/map" element={<Map disasterType={disasterType} />} />
-          <Route path="/shelters" element={<ShelterList />} />
-          <Route path="/safety-info" element={<SafetyInfo />} />
-        </Routes>
-        <Tabs defaultActiveKey = "supplies" id = "disaster-info-tabs" className = "mb-3">
-          <Tab eventKey = "supplies" title = "Supplies">
-            {suppliesResults}
-          </Tab>
-          <Tab eventKey = "directions" title = "Directions">
-            {directionsResults}
-          </Tab>
-          <Tab eventKey = "prevention" title = "Prevention">
-            {preventionResults}
-          </Tab>
-        </Tabs>
       </div>
+
     </Router>
   );
 }
