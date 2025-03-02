@@ -37,15 +37,23 @@ html, body {
 
 }
 
+
+
 .directions-box {
   background-color: lightgoldenrodyellow;
   padding-top: 10px;
 }
 
+  .Mitigation-box {
+    background-color: lightgoldenrodyellow;
+    padding-top: 10px;
+  }
+
 .Contacts-box {
   width: 100%;
   background-color: lightpink;
   padding: 20px;
+  
 }
 
 .Reset-button{
@@ -54,11 +62,12 @@ html, body {
   right: 5%;
   z-index: 1;
   border: 10px black;
-  border-width: 5px black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+  border-radius: 100%;
+  background-color: white;
 }
 
 .content-wrapper {

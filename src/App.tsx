@@ -41,23 +41,25 @@ function App() {
     let directionsPrompt = `say apple`;
     let preventionPrompt = 'say orange';
     console.log(" skethy Disaster type: " + disasterType);
-    /*if (disasterType === "Blizzard") {
+    
+    if (disasterType === "Blizzard") {
       console.log("Blizzard detected");
       suppliesPrompt = `There is a Blizzard happening around me right now, please tell me supplies needed to survive,
-       including water, non-perishable food, and medications and other items needed for survival.`;
+       including water, non-perishable food, and medications and other items needed for survival in a bulleted list of raw text.`;
       directionsPrompt = `There is a Blizzard happening around me right now, please tell me directions of what to do 
-      in case of a Blizzard. please include the following list of directions:
+      in case of a Blizzard in raw text. please include the following list of directions:
       Stay indoors
       Wear multiple layers of loose, dry clothing.
       Drink plenty of water and eat warming foods.
       If you must go outside, dress in layers, cover exposed skin, and exercise to keep warm.
       Conserve home energy by lowering heat and closing doors and vents in unused rooms.
       Stay entertained with low-energy activities like games and reading.
-      Have supplies ready, including water, non-perishable food, and medications
-`;
-      preventionPrompt = 'There is a Blizzard happening around me right now, please tell me ways to mitigate the adverse effects of a Blizzard.';
+      Have supplies ready, including water, non-perishable food, and medications`;
+
+      preventionPrompt = ('There is a Blizzard happening around me right now, please tell me ways to mitigate the adverse effects of a Blizzard on my house and family in raw text. Please include to drip your sinks so you pipes dont freeze.');
     }
-*/
+    
+
 
     //Stores the output of the AI in {item}Response
     //Gemini.generateContent("Input String")
@@ -65,6 +67,10 @@ function App() {
     const directionsResponse = await model.generateContent(directionsPrompt);
     const preventionResponse = await model.generateContent(preventionPrompt);
 
+    //Set the response to the state
+    setSuppliesResults(suppliesResponse.response.text());
+    setDirectionsResults(directionsResponse.response.text());
+    setPreventionResults(preventionResponse.response.text());
     console.log("Printing out gemini output");
     console.log(suppliesResponse.response.text());
     console.log(directionsResponse.response.text());
@@ -95,6 +101,8 @@ function App() {
           {disasterType && /*disasterType !== 'Hurricane/Tornado' && disasterType !== 'Blizzard' &&*/ disasterType !== 'Power Plant Meltdown' && (
             <GoogleMap disasterType={disasterType} />
           )}
+
+          
         </div>
 
         <Accordion defaultActiveKey="0" className="accordion-sections">
