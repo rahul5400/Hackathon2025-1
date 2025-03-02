@@ -124,6 +124,21 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
             { lat: 39.57476806640625, lng: -75.75569152832031, name: 'Earthquake Shelter 1' },
             { lat: 39.80015687000223, lng: -75.52089364232909, name: 'Earthquake Shelter 2' },
           ];
+        case 'wildfire':
+          return [
+            { lat: 39.77415605250937, lng: -75.50507666362107, name: 'Wildfire Shelter 1' },
+            { lat: 39.23039069403077, lng: -75.58188945891627, name: 'Wildfire Shelter 2' },
+          ];
+        case 'blizzard':
+          return [
+            { lat: 39.80012387046374, lng: -75.52088291729602, name: 'Blizzard Shelter 1' },
+            { lat: 39.77415605250937, lng: -75.50507666362107, name: 'Blizzard Shelter 2' },
+          ];
+        case 'hurricane/tornado':
+          return [
+            { lat: 39.80012387046374, lng: -75.52088291729602, name: 'Hurricane Shelter 1' },
+            { lat: 39.77415605250937, lng: -75.50507666362107, name: 'Hurricane Shelter 2' },
+          ];
         default:
           return [
             { lat: 39.80012387046374, lng: -75.52088291729602, name: 'Brandywine High School' },
